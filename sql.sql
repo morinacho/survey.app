@@ -50,7 +50,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `survey.app`.`respuesta_pregunta` (
   `respuesta_pregunta_id` INT NOT NULL AUTO_INCREMENT,
   `respuesta_pregunta_texto` VARCHAR(100) NOT NULL,
-  `respuesta_pregunta_imagen` VARCHAR(255) NOT NULL,  
+  `respuesta_pregunta_imagen` VARCHAR(255) NULL,  
   `respuesta_pregunta_excluyente` BOOLEAN NOT NULL,
   `pregunta_id_anidada` INT NULL,
   `pregunta_id` INT NOT NULL,
@@ -71,7 +71,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `survey.app`.`encuestador` (
   `encuestador_dni` INT NOT NULL,
   `encuestador_nombre` VARCHAR(100) NOT NULL,
-  `encuestador_contraseña` VARCHAR(100) NOT NULL,
+  `encuestador_contrasenia` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`encuestador_dni`))
 ENGINE = InnoDB;
 
@@ -84,7 +84,7 @@ CREATE TABLE IF NOT EXISTS `survey.app`.`encuestado` (
   `encuestado_iniciales` VARCHAR(10) NOT NULL,
   `encuestado_sexo` INT NOT NULL,
   `encuestado_email` VARCHAR(100) NULL,
-  `encuestado_telefono` MEDIUMTEXT NOT NULL,
+  `encuestado_telefono` BIGINT NOT NULL,
   `encuestado_fecha_nacimiento` DATE NOT NULL,
   `encuestado_nivel_educativo` VARCHAR(50) NOT NULL,
   `encuestado_actividad_laboral` VARCHAR(50) NULL,
@@ -92,9 +92,10 @@ CREATE TABLE IF NOT EXISTS `survey.app`.`encuestado` (
   `encuestado_enfermedad` VARCHAR(50) NULL,
   `encuestado_medicina` VARCHAR(45) NULL,
   `encuestado_suplemento` VARCHAR(50) NULL,
-  `encuestado_fumador` INT NOT NULL,
-  `encuestado_embarazo` VARCHAR(25) NOT NULL,
-  `encuestado_menospausa` INT NOT NULL,
+  `encuestado_fumador` INT NULL,
+  `encuestado_embarazo` VARCHAR(25) NULL,
+  `encuestado_menopausia` INT NULL,
+  `encuestado_lactando` INT NULL,
   `encuestado_estado_civil` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`encuestado_id`))
 ENGINE = InnoDB;
