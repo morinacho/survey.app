@@ -71,7 +71,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `survey.app`.`encuestador` (
   `encuestador_dni` INT NOT NULL,
   `encuestador_nombre` VARCHAR(100) NOT NULL,
-  `encuestador_contrasenia` VARCHAR(100) NOT NULL,
+  `encuestador_pass` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`encuestador_dni`))
 ENGINE = InnoDB;
 
