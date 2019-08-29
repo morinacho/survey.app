@@ -7,6 +7,7 @@
 		}
 
 		public function index(){ 
+			/*
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
 			
@@ -30,8 +31,8 @@
 			}
 			$param   = ['respuestas' => $surveys,
 						'preguntas'  => $preguntas,
-						'categoria'  => $categoriaNombre];
-			$this->view('surveys/index', $param);
+						'categoria'  => $categoriaNombre];*/
+			$this->view('surveys/index');
 		}
 
 		public function createquestion(){
