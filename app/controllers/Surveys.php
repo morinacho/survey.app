@@ -6,8 +6,10 @@
             $this->surveyModel = $this->model('Survey'); 
 		}
 
-		public function index(){ 
-			/*
+		public function index(){  
+			$response = $this->surveyModel->index(1);
+
+			/* codigo antiguo Eliminar 
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
 			
@@ -28,11 +30,9 @@
 					array_push($preguntas, $surveys[$i]->pregunta_texto); 			
 				}
 				else{continue;}
-			}
-			$param   = ['respuestas' => $surveys,
-						'preguntas'  => $preguntas,
-						'categoria'  => $categoriaNombre];*/
-			$this->view('surveys/index');
+			}*/ 
+			
+			$this->view('surveys/index', $response);
 		}
 
 		public function createquestion(){
