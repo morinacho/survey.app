@@ -67,5 +67,50 @@
         public function getId(){
             return $this->id;
         }
+        public function setTexto($texto){
+            $this->texto=$texto;
+        }
+        /**
+         * agrega respuestas a la pregunta
+         */
+        public function add($respuesta){
+            $this->respuestas[$this->getSize()]=$respuesta;
+        }
+        /**
+         * crea una nueva pregunta
+         */
+        public function insert($categoriaId){
+            $this->db->query('INSERT INTO `pregunta`(
+                    `pregunta_id`, `pregunta_texto`, `categoria_id`) 
+                    VALUES (NULL, `:texto`, :categoriaId ]);');
+            $this->db->bind(':texto', $this->texto);
+            $this->db->bind(':categoriaId', $categoriaId);
+            $this->db->excute();
+            
+            $this->db->query('SELECT pregunta_id
+                            FROM pregunta
+                            WHERE catergoria_id=:categoriaId AND pregunta_texto=:texto;');
+            $this->db->bind(':texto', $this->texto);
+            $this->db->bind(':categoriaId', $categoriaId);
+            $resultset=$this->db->getRescords();
+            $this->id=$resultset[0]->pregunta_id;
+
+            for($i=0;$i<$this->getSize();$i++){
+                    $this->respuestas[$i]->insert($this->id);
+            }
+        }
+        /**
+         * actualiza los datos de la pregunta
+         */
+        public function update($categoriaId){
+            $this->db->query('UPDATE `pregunta` 
+                            SET `pregunta_texto`= :texto,
+                            categoria_id  = :categoriaId
+                            WHERE pregunta_id=:preguntaId;');
+            $this->db->bind(':texto', $this->texto);
+            $this->db->bind(':preguntaId', $this->id);
+            $this->db->bind(':categoriaId', $categoriaId);
+            $this->db->excute();
+        }
     }
 ?>

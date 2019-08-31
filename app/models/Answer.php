@@ -61,5 +61,83 @@
         public function getId(){
             return $this->id;
         }
+        /**
+         * modifica el texto de la respuesta
+         */
+        public function setTexto($texto) {
+            $this->texto=$texto;
+        }
+        /**
+         * modifica la url de la imagen
+         */
+        public function setImagen($imagen){
+            $this->imagen=$imagen;
+        }
+        /**
+         * modifica el tipo de respuesta
+         */
+        public function setTipo($tipo) {
+            $this->tipo=$tipo;
+        }
+        /**
+         * modifica si la respuesta es excluyente o no
+         */
+        public function setExcluyente($excluyente){
+            $this->excluyente=$excluyente;
+        }
+        /**
+         * modifica la pregunta anidada
+         */
+        public function setPreguntaAnidada($preguntaAnidada){
+            $this->preguntaAnidada=$preguntaAnidada;
+        }
+        /**
+         * crea una nueva respuesta
+         */
+        public function insert($preguntaId){
+            $this->db->query('INSERT INTO `respuesta_pregunta`(
+                        `respuesta_pregunta_id`, 
+                        `respuesta_pregunta_texto`, 
+                        `respuesta_pregunta_imagen`, 
+                        `respuesta_pregunta_excluyente`, 
+                        `pregunta_id_anidada`, 
+                        `pregunta_id`, 
+                        `respuesta_pregunta_tipo`) VALUES (
+                            NULL,
+                            :texto,
+                            :imagen,
+                            :excluyente,
+                            :anidada,
+                            :preguntaId,
+                            :tipo);');
+            $this->db->bind(':texto', $this->texto);
+            $this->db->bind(':imagen', $this->imagen);
+            $this->db->bind(':excluyente', $this->excluyente);
+            $this->db->bind(':anidada', $this->preguntaAnidada);
+            $this->db->bind(':preguntaId', $preguntaId);
+            $this->db->bind(':tipo', $this->tipo);
+            $this->db->excute();
+        }
+        /**
+         * actualiza la respuesta
+         */
+        public function update($preguntaId){
+            $this->db->query(' UPDATE `respuesta_pregunta` 
+                                SET `respuesta_pregunta_texto`  = :texto ,
+                                `respuesta_pregunta_imagen`     = :imagen ,
+                                `respuesta_pregunta_excluyente` = :excluyente ,
+                                `pregunta_id_anidada`           = :anidada ,
+                                `pregunta_id`                   = :preguntaId ,
+                                `respuesta_pregunta_tipo`       = :tipo
+                                WHERE `respuesta_pregunta_id`   = :respuestaId;');
+             $this->db->bind(':texto', $this->texto);
+             $this->db->bind(':imagen', $this->imagen);
+             $this->db->bind(':excluyente', $this->excluyente);
+             $this->db->bind(':anidada', $this->preguntaAnidada);
+             $this->db->bind(':preguntaId', $preguntaId);
+             $this->db->bind(':tipo', $this->tipo);
+             $this->db->bind(':respuestaId', $this->id);
+             $this->db->excute();
+        }
     }
 ?>

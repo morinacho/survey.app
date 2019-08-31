@@ -3,6 +3,7 @@
                 private $db;
                 private $preguntas=array();
                 private $categoria;
+                private $categoriaId;
                 private $questionModel;
                         
                 /**
@@ -21,7 +22,7 @@
                         $this->db->bind(':categoriaId', $category);
                         $resultSet       = $this->db->getRecords();
                         $this->categoria = $resultSet[0]->categoria_nombre;
-                        
+                        $this->categoriaId=$category;
                         for($i = 0; $i < $this->db->rowCount() ;$i++){
                                 $id    = $resultSet[$i]->pregunta_id;
                                 $texto = $resultSet[$i]->pregunta_texto;
@@ -73,5 +74,52 @@
                 public function getCategoria(){
                         return $this->categoria;
                 }
+                /**
+                 * devuelve el id de la categoria
+                 */
+                public  function getCategoriaId() {
+                    return $this->categoriaId;
+                }
+                /**
+                 * agrega preguntas a la categoria
+                 */
+                public function add($pregunta){
+                        $this->preguntas[$this->getSize()]=$pregunta;
+                }
+                /**
+                 * crea una nueva categoria
+                 */
+                public function insert($nombreCategoria){
+                        $this->db->query('INSERT INTO `categoria`(
+                                `categoria_id`, 
+                                `categoria_nombre`) VALUES (
+                                    NULL, 
+                                    :categoriaNombre);');
+                        $this->db->bind(':categoriaNombre', $nombreCategoria);
+                        $this->db->excute();
+                        
+                        $this->db->query('SELECT categoria_id 
+                                        FROM categoria
+                                        WHERE categoria_nombre=:categoriaNombre;');
+                        $this->db->bind(':categoriaNombre', $nombreCategoria);
+                        $resultset=$this->db->getRecords();
+                        $this->categoriaId=$resultset[0]->categoria_id;
+
+                        for($i=0;$i<$this->getSize();$i++){
+                                $this->preguntas[$i]->insert($this->categoriaId);
+                        }
+                }
+                /**
+                 * actualiza los datos de la categoria
+                 */
+                public function update($nombreCategoria){
+                        $this->db->query('UPDATE `categoria` 
+                                        SET `categoria_nombre`= :categoriaNombre 
+                                        WHERE c.categoria_id  = :categoriaId;');
+                        $this->db->bind(':categoriaNombre', $nombreCategoria);
+                        $this->db->bind(':categoriaId', $this->categoriaId);
+                        $this->db->excute();
+                }
+                
         }
  ?>
