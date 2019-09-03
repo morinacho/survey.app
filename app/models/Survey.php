@@ -3,7 +3,7 @@
                 private $db;
                 private $preguntas=array();
                 private $categoria;
-                private $questionModel;
+                public $questionModel;
                         
                 /**
                  * construye la encuesta apartir de la categoria
@@ -22,6 +22,10 @@
                         $resultSet       = $this->db->getRecords();
                         $this->categoria = $resultSet[0]->categoria_nombre;
                         
+                        /**
+                         * en el $questionModel queda almacenado un Question()
+                         * con los datos de la pregunta
+                         */
                         for($i = 0; $i < $this->db->rowCount() ;$i++){
                                 $id    = $resultSet[$i]->pregunta_id;
                                 $texto = $resultSet[$i]->pregunta_texto;

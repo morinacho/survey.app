@@ -13,13 +13,14 @@
 		
 		# Crea la vista para realizar una encuesta
 		public function create(){
-			$response 	= $this->surveyModel->index(1);
+			$this->surveyModel->index(1);
+			$response = $this->surveyModel->questionModel->answerModel->getTexto();
 			print_r($response);
-			$params 	= [//cambiar a getPreguntas() y demas, pero primero tienen que llegar los datos
+			/*$params 	= [//cambiar a getPreguntas() y demas, pero primero tienen que llegar los datos
 					'categoria' => $response['categoria'],
 					'preguntas'	=> $response['preguntas'],
 					'respuestas'=> $response['respuestas']
-				];
+				];*/
 			/* codigo antiguo Eliminar 
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
