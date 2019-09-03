@@ -13,8 +13,13 @@
 		
 		# Crea la vista para realizar una encuesta
 		public function create(){
-			$response = $this->surveyModel->index(1);
-			$response = "";
+			$response 	= $this->surveyModel->index(1);
+			print_r($response);
+			$params 	= [//cambiar a getPreguntas() y demas, pero primero tienen que llegar los datos
+					'categoria' => $response['categoria'],
+					'preguntas'	=> $response['preguntas'],
+					'respuestas'=> $response['respuestas']
+				];
 			/* codigo antiguo Eliminar 
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
@@ -37,12 +42,12 @@
 				}
 				else{continue;}
 			}*/ 
-			$this->view('surveys/create', $response);
+			$this->view('surveys/create', $params);
 		}
 
 		# Permite guardar los datos de la encuesta que se realizo desde el create
 		public function store(){
-
+			
 		}
 
 		# Permite editar la encuesta seleccionada
