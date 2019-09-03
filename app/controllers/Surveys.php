@@ -6,9 +6,15 @@
             $this->surveyModel = $this->model('Survey'); 
 		}
 
+		# Crea la vista index con menu para realizar encuesta
 		public function index(){  
+			$this->view('surveys/index');
+		}
+		
+		# Crea la vista para realizar una encuesta
+		public function create(){
 			$response = $this->surveyModel->index(1);
-
+			$response = "";
 			/* codigo antiguo Eliminar 
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
@@ -31,12 +37,27 @@
 				}
 				else{continue;}
 			}*/ 
-			
-			$this->view('surveys/index', $response);
+			$this->view('surveys/create', $response);
 		}
 
-		public function createquestion(){
-			$this->view('surveys/createquestion');
+		# Permite guardar los datos de la encuesta que se realizo desde el create
+		public function store(){
+
+		}
+
+		# Permite editar la encuesta seleccionada
+		public function update(){
+
+		}
+
+		# Elimina una encuesta
+		public function delete(){
+
+		}
+
+		# Exporta los datos de todas las encuesta en un archivo xlsx
+		public function exports(){
+			echo "esto exporta";
 		}
 	}
 
