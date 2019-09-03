@@ -4,7 +4,7 @@
         private $texto;
         private $respuestas = array();
         private $db;
-        public $answerModel;
+        private $answerModel;
         /**
          * construye la pregunta apartir del id y el texto
          */
@@ -23,7 +23,7 @@
                             WHERE pregunta_id=:preguntaId;');
 
             $this->db->bind(':preguntaId',$this->id);
-            $resultSet = $this->db->getRecords();
+            $resultSet = $this->db->getRecords();        
             
             for($i = 0; $i<$this->db->rowCount(); $i++){
                 $id              = $resultSet[$i]->respuesta_pregunta_id;
@@ -36,8 +36,16 @@
                  * aca vuelve a hacer lo mismo pero es un Answer()
                  * con los datos de la respuesta en $answerModel
                  */
-                $this->respuestas[$i] =  $this->answerModel->index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada);
-            } 
+                $this->respuestas[$i] = $this->answerModel->index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada);
+            }
+
+            $response = [
+                    "id"        => $this->id,
+                    "texto"     => $this->texto,
+                    "respuestas"=> $this->getRespuestas()
+            ];
+
+            return $response;
         }
         /**
          * devuelve todas las respustas posibles a la pregunta

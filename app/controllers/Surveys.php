@@ -13,14 +13,14 @@
 		
 		# Crea la vista para realizar una encuesta
 		public function create(){
-			$this->surveyModel->index(1);
-			$response = $this->surveyModel->questionModel->answerModel->getTexto();
-			print_r($response);
-			/*$params 	= [//cambiar a getPreguntas() y demas, pero primero tienen que llegar los datos
-					'categoria' => $response['categoria'],
-					'preguntas'	=> $response['preguntas'],
-					'respuestas'=> $response['respuestas']
-				];*/
+
+			/**
+			 * se pide la encuesta por categoria
+			 * en este caso '1' es actividad fisica
+			 */
+
+			$params = $this->surveyModel->index(1);
+
 			/* codigo antiguo Eliminar 
 			$surveys = $this->surveyModel->getSurvey(1);
 			$count = count($surveys);
@@ -42,7 +42,28 @@
 					array_push($preguntas, $surveys[$i]->pregunta_texto); 			
 				}
 				else{continue;}
-			}*/ 
+			}*/
+
+			/**
+			 * $params es un array asociativo que tiene lo siguiente:
+			 * [categoria] 	= contiene el nombre de la categoria ex. 'Actividad Fisica'
+			 * [preguntas] 	= contiene un array con todas las preguntas de la categoria
+			 * [preguntas] es un array simple(indice enumerado con integers autoincrementables)
+			 * en cada posicion del mismo se encuentran otros arrays asociativos con los siguientes campos
+			 * [id] 		= el id de la pregunta
+			 * [texto] 		= el texto de la pregunta
+			 * [respuestas]	= un array con las respuestas de la pregunta
+			 * al igual que preguntas [respuestas] es un array simple con arrays asoc. dentro, contiente:
+			 * [id]				 = el id de la respuesta
+			 * [imagen]			 = imagen de la respuesta (esto hay que ver como hacemos)
+			 * [texto]			 = texto de la respuesta
+			 * [tipo]			 = tipo de respuesta (radio, check, text, selct)
+			 * [excluyente]		 = indica si esta respuesta es excluyente o no
+			 * [pregunta anidada]= indica si esta respuesta abre otra pregunta
+			 */
+
+			#ejemplo para ver el array de una respuesta especifica de una pregunta especifica
+			print_r($params['preguntas'][0]['respuestas'][0]);
 			$this->view('surveys/create', $params);
 		}
 
