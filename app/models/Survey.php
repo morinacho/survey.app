@@ -80,5 +80,12 @@
                 public function getCategoria(){
                         return $this->categoria;
                 }
+
+                public function getNumRowCategoria(){
+                        $this->db = new DataBase;
+                        $this->db->query('SELECT * FROM categoria');
+                        $this->db->execute();
+                        return $this->db->rowCount();
+                }
         }
  ?>
