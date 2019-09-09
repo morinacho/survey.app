@@ -49,7 +49,7 @@
                 </div>
                 <div class='form-check col-6'>
                     <input class='form-check-input' type='checkbox'  name='residencia' id='residencia'>
-                    <label class='form-check-label' for='residencia'>Menor de 6meses</label>
+                    <label class='form-check-label' for='residencia'>Menor de 6 meses</label>
                 </div>
                 <div class='col-6'>
                     <span>3. Hospitalización</span>
@@ -62,7 +62,7 @@
                     <span>4. Consumo de corticoides sistémicos de forma crónica</span>
                 </div>
                 <div class='form-check col-6'>
-                    <input class='form-check-input' type='checkbox'  name='hospital' id='corticoides'>
+                    <input class='form-check-input' type='checkbox'  name='corticoides' id='corticoides'>
                     <label class='form-check-label' for='corticoides'>Consume</label>
                 </div>
             </div>
