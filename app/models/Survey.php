@@ -85,6 +85,7 @@
                 public function getCategoria(){
                         return $this->categoria;
                 }
+<<<<<<< HEAD
                 /**
                  * devuelve el id de la categoria
                  */

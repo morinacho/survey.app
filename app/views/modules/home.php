@@ -14,7 +14,7 @@
 </div>
 <div class="row mt-5 justify-content-around">
 	<div class="col-7 text-center mt-5">
-		<a href="<?php echo URL_ROUTE ?>/surveys/create" class="btn btn-outline-primary" role="button">Realizar encuesta</a>
+		<a href="<?php echo URL_ROUTE ?>surveys/create" class="btn btn-outline-primary" role="button">Realizar encuesta</a>
     </div> 
 </div>
 <?php require_once APP_ROUTE . '/views/modules/footer.php'; ?>
