@@ -4,11 +4,12 @@
         private $texto;
         private $respuestas = array();
         private $db;
+        private $answerModel;
         /**
          * construye la pregunta apartir del id y el texto
          */
         public function index($id,$texto){ 
-            $this->questionModel = $this->model("Answer");
+            $this->answerModel = $this->model("Answer");
             $this->id    = $id;
             $this->texto = $texto;
             $this->db    = new DataBase;
@@ -22,7 +23,7 @@
                             WHERE pregunta_id=:preguntaId;');
 
             $this->db->bind(':preguntaId',$this->id);
-            $resultSet = $this->db->getRecords();
+            $resultSet = $this->db->getRecords();        
             
             for($i = 0; $i<$this->db->rowCount(); $i++){
                 $id              = $resultSet[$i]->respuesta_pregunta_id;
@@ -31,9 +32,20 @@
                 $tipo            = $resultSet[$i]->respuesta_pregunta_tipo;
                 $excluyente      = $resultSet[$i]->respuesta_pregunta_excluyente;
                 $preguntaAnidada = $resultSet[$i]->pregunta_id_anidada;
-                
-                $this->respuestas[$i] =  $this->questionModel->index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada);
-            } 
+                /**
+                 * aca vuelve a hacer lo mismo pero es un Answer()
+                 * con los datos de la respuesta en $answerModel
+                 */
+                $this->respuestas[$i] = $this->answerModel->index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada);
+            }
+
+            $response = [
+                    "id"        => $this->id,
+                    "texto"     => $this->texto,
+                    "respuestas"=> $this->getRespuestas()
+            ];
+
+            return $response;
         }
         /**
          * devuelve todas las respustas posibles a la pregunta

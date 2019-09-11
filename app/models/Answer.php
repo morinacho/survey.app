@@ -22,8 +22,18 @@
             $this->texto      = $texto;
             $this->tipo       = $tipo;
             $this->excluyente = $excluyente;
-            
             $this->preguntaAnidada = $preguntaAnidada;
+
+            $response = [
+                    "id"            =>$this->id,
+                    "imagen"        =>$this->imagen,
+                    "texto"         =>$this->texto,
+                    "tipo"          =>$this->tipo,
+                    "excluyente"    =>$this->excluyente,
+                    "preguntaAnidada"=>$this->preguntaAnidada,
+            ];
+
+            return $response;
         }
         /**
          * devuelve el texto de la pregunta de la respusta

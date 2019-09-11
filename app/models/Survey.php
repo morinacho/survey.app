@@ -22,18 +22,29 @@
                         $this->db->bind(':categoriaId', $category);
                         $resultSet       = $this->db->getRecords();
                         $this->categoria = $resultSet[0]->categoria_nombre;
+<<<<<<< HEAD
                         $this->categoriaId=$category;
+=======
+                        
+                        /**
+                         * se manda el id de la pregunta a Question,
+                         * lo cual devuelve las respuestas
+                         */
+>>>>>>> ed4b3a24b12d811b280b25be3808922309783a8b
                         for($i = 0; $i < $this->db->rowCount() ;$i++){
                                 $id    = $resultSet[$i]->pregunta_id;
                                 $texto = $resultSet[$i]->pregunta_texto;
                                 $this->preguntas[$i] = $this->questionModel->index($id,$texto);
+
                         }
-                        
+
+                        #array con la categoria y las preguntas
                         $response = [
-                                "preguntas" => $this->preguntas,
-                                "categoria" => $this->categoria
+                                "categoria" => $this->categoria,
+                                "preguntas" => $this->getPreguntas()
                         ];
 
+                        #se devuelve a Surveys
                         return $response;
                 }
                 
