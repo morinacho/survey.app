@@ -133,5 +133,14 @@
                         $this->db->excute();
                 }
                 
+=======
+
+                public function getNumRowCategoria(){
+                        $this->db = new DataBase;
+                        $this->db->query('SELECT * FROM categoria');
+                        $this->db->execute();
+                        return $this->db->rowCount();
+                }
+>>>>>>> 74b04a2f5cbe56e6e45b4e0a016aee82b73596dd
         }
  ?>
