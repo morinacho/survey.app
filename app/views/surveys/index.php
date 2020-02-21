@@ -86,7 +86,6 @@
             echo "b";
         }
     }*/
-    
     require_once APP_ROUTE . '/views/modules/footer.php'; 
 
 ?> 

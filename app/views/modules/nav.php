@@ -31,5 +31,4 @@
     </ul>
   </div>
 </nav>
-<?php require_once APP_ROUTE . '/views/modules/login.php'; ?>
 <?php require_once APP_ROUTE . '/views/modules/register.php'; ?>

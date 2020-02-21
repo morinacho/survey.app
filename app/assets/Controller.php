@@ -1,5 +1,5 @@
 <?php 
-	
+
 	class Controller{
 
 		# Load model
@@ -20,9 +20,7 @@
 		}
 
 		public static function authenticated(){
-			session_start();
 			return (isset($_SESSION['user']));
 		}
 	}
-
 ?>
