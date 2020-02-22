@@ -7,6 +7,7 @@
         private $tipo;
         private $excluyente;
         private $preguntaAnidada;
+        private $preguntaId;
         /**
          * construye la respuesta a partir de los parametros
          * param: $id es el id de la respuesta
@@ -16,20 +17,21 @@
          *        $excluyente indica si esta respuesta es excluyente o no
          *        $preguntaAnidada si esta respuesta abre otra pregunta
          */
-        public function index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada){
-            $this->id         = $id;
-            $this->imagen     = $imagen;
-            $this->texto      = $texto;
-            $this->tipo       = $tipo;
-            $this->excluyente = $excluyente;
-            $this->preguntaAnidada = $preguntaAnidada;
+        public function index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada,$preguntaId){
+            $this->id               = $id;
+            $this->imagen           = $imagen;
+            $this->texto            = $texto;
+            $this->tipo             = $tipo;
+            $this->excluyente       = $excluyente;
+            $this->preguntaAnidada  = $preguntaAnidada;
+            $this->preguntaId       = $preguntaId;
 
             $response = [
-                    "id"            =>$this->id,
-                    "imagen"        =>$this->imagen,
-                    "texto"         =>$this->texto,
-                    "tipo"          =>$this->tipo,
-                    "excluyente"    =>$this->excluyente,
+                    "id"             =>$this->id,
+                    "imagen"         =>$this->imagen,
+                    "texto"          =>$this->texto,
+                    "tipo"           =>$this->tipo,
+                    "excluyente"     =>$this->excluyente,
                     "preguntaAnidada"=>$this->preguntaAnidada,
             ];
 
@@ -105,7 +107,8 @@
          * crea una nueva respuesta
          */
         public function insert($preguntaId){
-            $this->db->query('INSERT INTO `respuesta_pregunta`(
+            $db=new DataBase;
+            $db->query('INSERT INTO `respuesta_pregunta`(
                         `respuesta_pregunta_id`, 
                         `respuesta_pregunta_texto`, 
                         `respuesta_pregunta_imagen`, 
@@ -120,19 +123,20 @@
                             :anidada,
                             :preguntaId,
                             :tipo);');
-            $this->db->bind(':texto', $this->texto);
-            $this->db->bind(':imagen', $this->imagen);
-            $this->db->bind(':excluyente', $this->excluyente);
-            $this->db->bind(':anidada', $this->preguntaAnidada);
-            $this->db->bind(':preguntaId', $preguntaId);
-            $this->db->bind(':tipo', $this->tipo);
-            $this->db->excute();
+            $db->bind(':texto', $this->texto);
+            $db->bind(':imagen', $this->imagen);
+            $db->bind(':excluyente', $this->excluyente);
+            $db->bind(':anidada', $this->preguntaAnidada);
+            $db->bind(':preguntaId', $preguntaId);
+            $db->bind(':tipo', $this->tipo);
+            $db->excute();
         }
         /**
          * actualiza la respuesta
          */
-        public function update($preguntaId){
-            $this->db->query(' UPDATE `respuesta_pregunta` 
+        public function update(){
+            $db=new DataBase;
+            $db->query(' UPDATE `respuesta_pregunta` 
                                 SET `respuesta_pregunta_texto`  = :texto ,
                                 `respuesta_pregunta_imagen`     = :imagen ,
                                 `respuesta_pregunta_excluyente` = :excluyente ,
@@ -140,14 +144,14 @@
                                 `pregunta_id`                   = :preguntaId ,
                                 `respuesta_pregunta_tipo`       = :tipo
                                 WHERE `respuesta_pregunta_id`   = :respuestaId;');
-             $this->db->bind(':texto', $this->texto);
-             $this->db->bind(':imagen', $this->imagen);
-             $this->db->bind(':excluyente', $this->excluyente);
-             $this->db->bind(':anidada', $this->preguntaAnidada);
-             $this->db->bind(':preguntaId', $preguntaId);
-             $this->db->bind(':tipo', $this->tipo);
-             $this->db->bind(':respuestaId', $this->id);
-             $this->db->excute();
+             $db->bind(':texto', $this->texto);
+             $db->bind(':imagen', $this->imagen);
+             $db->bind(':excluyente', $this->excluyente);
+             $db->bind(':anidada', $this->preguntaAnidada);
+             $db->bind(':preguntaId', $this->preguntaId);
+             $db->bind(':tipo', $this->tipo);
+             $db->bind(':respuestaId', $this->id);
+             $db->excute();
         }
     }
 ?>
