@@ -10,7 +10,33 @@
 		public function index(){  
 			$this->view('surveys/index');
 		}
+
+
+		# Routing
+		# Add new survey
+		public function addSurvey(){
+			$this->view('surveys/add-survey');
+		}
+
+		# Favorite survey
+		public function favSurvey(){
+			$this->view('surveys/fav-survey');
+		}
+
+		# Pending survey
+		public function pendingSurvey(){
+			$this->view('surveys/pending-survey');
+		}
+
+		# Finish survey
+		public function finishSurvey(){
+			$this->view('surveys/finish-survey');
+		}
 		
+		# View survey
+		public function viewSurvey(){
+			$this->view('surveys/view-survey');
+		}
 		public function create(){
 			$this->view('surveys/create');
 		}

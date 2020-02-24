@@ -1,4 +1,5 @@
-<?php /*
+<?php 
+echo "bla!";/*
     require_once APP_ROUTE . '/views/modules/header.php';
     
     $preguntas  = $param['preguntas'];
