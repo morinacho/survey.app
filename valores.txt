@@ -1,0 +1,23 @@
+respuesta excluyente:
+=0 de multiple respuestas (CheckButtom)
+=1 de respuesta unica (RadioButtom)
+
+tipo de respuesta:
+=0 Buttom (check o radio)
+=1 ComboBox
+=2 TextField
+=3 Spinner
+
+encuestado sexo
+=0 hombre
+=1 mujer
+
+encuestado fumador
+=0 no
+=1 si, actualmente
+=2 si, en el pasado
+
+encuestado lactando
+=0 no
+=1 sí
+
