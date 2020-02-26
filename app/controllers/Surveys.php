@@ -35,7 +35,7 @@
 		
 		# View survey
 		public function viewSurvey(){
-			$this->view('surveys/view-survey');
+			$this->view('surveys/view0000000000000000000000000000000000-survey');
 		}
 		public function create(){
 			$this->view('surveys/create');
@@ -105,9 +105,6 @@
 		}
 
 		# Exporta los datos de todas las encuesta en un archivo xlsx
-		public function export(){
-			echo "esto exporta";
-		}
 
 		public function export(){
 			$db=new DataBase();
