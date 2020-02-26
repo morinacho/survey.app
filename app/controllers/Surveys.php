@@ -35,7 +35,7 @@
 		
 		# View survey
 		public function viewSurvey(){
-			$this->view('surveys/view0000000000000000000000000000000000-survey');
+			$this->view('surveys/view-survey');
 		}
 		public function create(){
 			$this->view('surveys/create');
