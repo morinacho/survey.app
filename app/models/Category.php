@@ -7,6 +7,22 @@
                 private $questionModel;
                         
                 /**
+                 * @return mixed devuelve el nombre de la categoria
+                 */
+                public function getCategoriaNombre()
+                {
+                    return $this->categoriaNombre;
+                }
+            
+                /**
+                 * @param mixed $categoriaNombre agrega el nombre de la categoria
+                 */
+                public function setCategoriaNombre($categoriaNombre)
+                {
+                    $this->categoriaNombre = $categoriaNombre;
+                }
+            
+                /**
                  * construye la encuesta apartir de la categoria
                  * param $category es el id de la categoria que se desea
                  * param $categoriaNombre es el nombre de la categoria
@@ -43,6 +59,8 @@
                         #se devuelve a Surveys
                         return $response;
                 }
+                
+                
                 
                 /**
                  * devuelve todas las preguntas de la categoria
