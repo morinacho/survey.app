@@ -172,7 +172,7 @@ class Survey extends Controller{
                           SET encuesta_nombre= :nombreEncuesta
                           WHERE encuesta_id  = :surveyId;');
         $this->db->bind(':nombreEncuesta', $this->surveyNombre);
-        $this->db->bind(':categoriaId', );
+        $this->db->bind(':surveyId', $this->surveyId);
         $this->db->excute();
     }
 }
