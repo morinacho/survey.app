@@ -1,5 +1,4 @@
-<?php  
-	session_start(); 
+<?php   
 	if (Controller::authenticated()){
 		require_once APP_ROUTE . '/views/modules/header.php';
 		require_once APP_ROUTE . '/views/modules/home.php';
