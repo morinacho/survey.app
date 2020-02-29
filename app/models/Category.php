@@ -118,28 +118,33 @@
                         if($this->db==NULL){
                             $this->db=new DataBase;
                         }
-                    
-                        $this->db->query('INSERT INTO `categoria`(
-                                `categoria_id`, 
-                                `categoria_nombre`) VALUES (
-                                    NULL, 
-                                    :categoriaNombre,
-                                    :surveyId);');
-                        $this->db->bind(':categoriaNombre', $this->categoriaNombre);
-                        $this->db->bind(':surveyId', $surveyId);
-                        $this->db->excute();
-                        
                         $this->db->query('SELECT categoria_id 
-                                        FROM categoria
-                                        WHERE encuesta_id=:surverId 
-                                        AND categoria_nombre=:categoriaNombre;');
-                        $this->db->bind(':surveyId', $surveyId);
+                                            FROM categoria WHERE categoria_nombre=:categoriaNombre;');
                         $this->db->bind(':categoriaNombre', $this->categoriaNombre);
+                        $this->db->excute();
                         $resultset=$this->db->getRecords();
+                        if(count($resultset)==0){
+                            $this->db->query('INSERT INTO `categoria`(
+                                    `categoria_id`, 
+                                    `categoria_nombre`) VALUES (
+                                        NULL, 
+                                        :categoriaNombre,
+                                        :surveyId);');
+                            $this->db->bind(':categoriaNombre', $this->categoriaNombre);
+                            $this->db->bind(':surveyId', $surveyId);
+                            $this->db->excute();
+                            
+                            $this->db->query('SELECT categoria_id 
+                                            FROM categoria
+                                            WHERE encuesta_id=:surverId 
+                                            AND categoria_nombre=:categoriaNombre;');
+                            $this->db->bind(':surveyId', $surveyId);
+                            $this->db->bind(':categoriaNombre', $this->categoriaNombre);
+                            $resultset=$this->db->getRecords();
+                        } 
                         $this->categoriaId=$resultset[0]->categoria_id;
-
                         for($i=0;$i<$this->getSize();$i++){
-                                $this->preguntas[$i]->insert($this->categoriaId);
+                            $this->preguntas[$i]->insert($this->categoriaId);
                         }
                 }
                 /**
