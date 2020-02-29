@@ -123,7 +123,7 @@
                         $this->db->bind(':categoriaNombre', $this->categoriaNombre);
                         $this->db->excute();
                         $resultset=$this->db->getRecords();
-                        if(count($resultset)==0){
+                        if($this->db->rowCount()==0){
                             $this->db->query('INSERT INTO `categoria`(
                                     `categoria_id`, 
                                     `categoria_nombre`) VALUES (
@@ -141,10 +141,29 @@
                             $this->db->bind(':surveyId', $surveyId);
                             $this->db->bind(':categoriaNombre', $this->categoriaNombre);
                             $resultset=$this->db->getRecords();
-                        } 
-                        $this->categoriaId=$resultset[0]->categoria_id;
+                            $this->categoriaId=$resultset[0]->categoria_id;
+                            
+                            $this->db->query('SELECT encuesta_categoria_id
+                                            FROM encuesta_categoria
+                                            WHERE encuesta_id=:surverId
+                                            AND categoria_id=:categoriaId;');
+                            $this->db->bind(':surveyId', $surveyId);
+                            $this->db->bind(':categoriaId', $this->categoriaId);
+                            $resultset=$this->db->getRecords();
+                        } else {
+                            $this->categoriaId=$resultset[0]->categoria_id;
+                            
+                            $this->db->query('SELECT encuesta_categoria_id
+                                            FROM encuesta_categoria
+                                            WHERE encuesta_id=:surverId
+                                            AND categoria_id=:categoriaId;');
+                            $this->db->bind(':surveyId', $surveyId);
+                            $this->db->bind(':categoriaId', $this->categoriaId);
+                            $resultset=$this->db->getRecords();
+                        }
+                        $id=$resultset[0]->encuesta_categoria_id;
                         for($i=0;$i<$this->getSize();$i++){
-                            $this->preguntas[$i]->insert($this->categoriaId);
+                            $this->preguntas[$i]->insert($id);
                         }
                 }
                 /**
