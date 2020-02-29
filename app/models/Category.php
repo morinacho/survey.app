@@ -27,14 +27,24 @@
                  * param $category es el id de la categoria que se desea
                  * param $categoriaNombre es el nombre de la categoria
                  */
-                public function index($category,$categoriaNombre){
+                public function index($surveyId,$category,$categoriaNombre){
                         $this->questionModel = $this->model("Question");
                         $this->db = new DataBase;
+                        
+                        $this->db->query('SELECT encuesta_categoria_id 
+                                            FROM encuesta_categoria 
+                                            WHERE encuesta_id=:surveyId 
+                                            AND categoria_id=:categoriaId');
+                        $this->db->bind(':surveyId', $surveyId);
+                        $this->db->bind(':categoriaId', $category);
+                        $resultSet          = $this->db->getRecords();
+                        $encustaCategoriaId = $resultSet[0]->encuesta_categoria_id;
+                        
                         $this->db->query('SELECT pregunta_id, pregunta_texto
                                         FROM pregunta 
-                                        WHERE categoria_id = :categoriaId;');
+                                        WHERE encuesta_categoria_id = :encustaCategoriaId;');
 
-                        $this->db->bind(':categoriaId', $category);
+                        $this->db->bind(':encustaCategoriaId', $encustaCategoriaId);
                         $resultSet       = $this->db->getRecords();
                         $this->categoriaNombre = $categoriaNombre;
                         $this->categoriaId=$category;
