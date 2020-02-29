@@ -86,11 +86,12 @@ class Survey extends Controller{
                 $this->surveyId     = $resultSet[0]->encuesta_id;
                 $this->autor        = $resultSet[0]->encuestador_nombre;
                 
-                /* se manda el id de la pregunta a Survey,
-                 * lo cual devuelve las categoria
-                 */
-                $this->db->query('SELECT categoria_id, categoria_nombre 
-                                    FROM categoria 
+                // devuelve todas las categorias de la encuesta
+                 
+                $this->db->query('SELECT c.categoria_id, c.categoria_nombre 
+                                    FROM categoria c
+                                    INNER JOIN encuesta_categoria ec
+                                    ON ec.categoria_id=c.categoria_id
                                     WHERE encuesta_id=:surveyId;');                
                 $this->db->bind(':surveyId',$this->surveyId);
                 $resultSet = $this->db->getRecords();
@@ -98,7 +99,7 @@ class Survey extends Controller{
                 for($i = 0; $i < $this->db->rowCount() ;$i++){
                     $id    = $resultSet[$i]->categoria_id;
                     $texto = $resultSet[$i]->categoria_nombre;
-                    $this->categorias[$i] = $this->categoryModel->index($id,$texto);                    
+                    $this->categorias[$i] = $this->categoryModel->index($this->surveyId,$id,$texto);                    
                 }
                 
                 #array con la encuesta y las categorias
