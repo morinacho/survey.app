@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 21-02-2020 a las 00:57:40
+-- Tiempo de generación: 29-02-2020 a las 23:19:44
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 7.2.8
 
@@ -30,20 +30,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `categoria` (
   `categoria_id` int(11) NOT NULL,
-  `categoria_nombre` varchar(50) NOT NULL,
-  `encuesta_id` int(11) NOT NULL
+  `categoria_nombre` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `categoria`
 --
 
-INSERT INTO `categoria` (`categoria_id`, `categoria_nombre`, `encuesta_id`) VALUES
-(1, 'Actividad física (AF)', 1),
-(2, 'Alimentación (A)', 1),
-(3, 'Factores Psicosociales (FP)', 1),
-(4, 'Datos Antropometricos (DA)', 1),
-(5, 'Muestra de Cabello (MC)', 1);
+INSERT INTO `categoria` (`categoria_id`, `categoria_nombre`) VALUES
+(1, 'Actividad física (AF)'),
+(2, 'Alimentación (A)'),
+(3, 'Factores Psicosociales (FP)'),
+(4, 'Datos Antropometricos (DA)'),
+(5, 'Muestra de Cabello (MC)');
 
 -- --------------------------------------------------------
 
@@ -113,20 +112,43 @@ INSERT INTO `encuestador` (`encuestador_dni`, `encuestador_nombre`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `encuesta_categoria`
+--
+
+CREATE TABLE `encuesta_categoria` (
+  `encuesta_categoria_id` int(11) NOT NULL,
+  `encuesta_id` int(11) NOT NULL,
+  `categoria_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Volcado de datos para la tabla `encuesta_categoria`
+--
+
+INSERT INTO `encuesta_categoria` (`encuesta_categoria_id`, `encuesta_id`, `categoria_id`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `pregunta`
 --
 
 CREATE TABLE `pregunta` (
   `pregunta_id` int(11) NOT NULL,
   `pregunta_texto` varchar(255) NOT NULL,
-  `categoria_id` int(11) NOT NULL
+  `encuesta_categoria_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `pregunta`
 --
 
-INSERT INTO `pregunta` (`pregunta_id`, `pregunta_texto`, `categoria_id`) VALUES
+INSERT INTO `pregunta` (`pregunta_id`, `pregunta_texto`, `encuesta_categoria_id`) VALUES
 (1, '¿Qué frase refleja mejor la actividad física que realiza en su ocupación habitual? Incluyendo las tareas del hogar', 1),
 (2, 'En la última semana en su tiempo libre (aparte de la actividad que realizo en su ocupación habitual) ¿Realizó alguna de estas actividades físicas?', 1),
 (3, '¿Qué comidas realiza al día?', 2),
@@ -270,20 +292,20 @@ INSERT INTO `pregunta` (`pregunta_id`, `pregunta_texto`, `categoria_id`) VALUES
 --
 
 CREATE TABLE `respuesta` (
-  `respuesta_pregunta_id` int(11) NOT NULL,
-  `respuesta_pregunta_texto` varchar(100) NOT NULL,
-  `respuesta_pregunta_imagen` varchar(255) DEFAULT NULL,
-  `respuesta_pregunta_excluyente` tinyint(1) NOT NULL,
+  `respuesta_id` int(11) NOT NULL,
+  `respuesta_texto` varchar(100) NOT NULL,
+  `respuesta_imagen` varchar(255) DEFAULT NULL,
+  `respuesta_excluyente` tinyint(1) NOT NULL,
   `pregunta_id_anidada` int(11) DEFAULT NULL,
   `pregunta_id` int(11) NOT NULL,
-  `respuesta_pregunta_tipo` int(11) NOT NULL
+  `respuesta_tipo` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Volcado de datos para la tabla `respuesta`
 --
 
-INSERT INTO `respuesta` (`respuesta_pregunta_id`, `respuesta_pregunta_texto`, `respuesta_pregunta_imagen`, `respuesta_pregunta_excluyente`, `pregunta_id_anidada`, `pregunta_id`, `respuesta_pregunta_tipo`) VALUES
+INSERT INTO `respuesta` (`respuesta_id`, `respuesta_texto`, `respuesta_imagen`, `respuesta_excluyente`, `pregunta_id_anidada`, `pregunta_id`, `respuesta_tipo`) VALUES
 (1, 'Está sentado la mayor parte del tiempo', NULL, 1, NULL, 1, 3),
 (2, 'Está de pie la mayor parte del tiempo', NULL, 1, NULL, 1, 3),
 (3, 'Se desplaza o mueve a menudo', NULL, 1, NULL, 1, 3),
@@ -658,8 +680,7 @@ INSERT INTO `usuario` (`encuestador_dni`, `usuario_nombre`, `usuario_contrasenia
 -- Indices de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  ADD PRIMARY KEY (`categoria_id`),
-  ADD KEY `encuesta_id` (`encuesta_id`);
+  ADD PRIMARY KEY (`categoria_id`);
 
 --
 -- Indices de la tabla `encuesta`
@@ -680,17 +701,25 @@ ALTER TABLE `encuestador`
   ADD PRIMARY KEY (`encuestador_dni`);
 
 --
+-- Indices de la tabla `encuesta_categoria`
+--
+ALTER TABLE `encuesta_categoria`
+  ADD PRIMARY KEY (`encuesta_categoria_id`),
+  ADD KEY `categoria_id` (`categoria_id`),
+  ADD KEY `encuesta_id` (`encuesta_id`);
+
+--
 -- Indices de la tabla `pregunta`
 --
 ALTER TABLE `pregunta`
   ADD PRIMARY KEY (`pregunta_id`),
-  ADD KEY `fk_pregunta_categoria1_idx` (`categoria_id`);
+  ADD KEY `fk_pregunta_categoria1` (`encuesta_categoria_id`);
 
 --
 -- Indices de la tabla `respuesta`
 --
 ALTER TABLE `respuesta`
-  ADD PRIMARY KEY (`respuesta_pregunta_id`),
+  ADD PRIMARY KEY (`respuesta_id`),
   ADD KEY `fk_respuesta_pregunta_pregunta1_idx` (`pregunta_id`);
 
 --
@@ -732,6 +761,12 @@ ALTER TABLE `encuestado`
   MODIFY `encuestado_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT de la tabla `encuesta_categoria`
+--
+ALTER TABLE `encuesta_categoria`
+  MODIFY `encuesta_categoria_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT de la tabla `pregunta`
 --
 ALTER TABLE `pregunta`
@@ -741,7 +776,7 @@ ALTER TABLE `pregunta`
 -- AUTO_INCREMENT de la tabla `respuesta`
 --
 ALTER TABLE `respuesta`
-  MODIFY `respuesta_pregunta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=340;
+  MODIFY `respuesta_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=340;
 
 --
 -- AUTO_INCREMENT de la tabla `respuesta_encuesta`
@@ -760,16 +795,17 @@ ALTER TABLE `usuario`
 --
 
 --
--- Filtros para la tabla `categoria`
+-- Filtros para la tabla `encuesta_categoria`
 --
-ALTER TABLE `categoria`
-  ADD CONSTRAINT `categoria_ibfk_1` FOREIGN KEY (`encuesta_id`) REFERENCES `encuesta` (`encuesta_id`);
+ALTER TABLE `encuesta_categoria`
+  ADD CONSTRAINT `encuesta_categoria_ibfk_1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`categoria_id`),
+  ADD CONSTRAINT `encuesta_categoria_ibfk_2` FOREIGN KEY (`encuesta_id`) REFERENCES `encuesta` (`encuesta_id`);
 
 --
 -- Filtros para la tabla `pregunta`
 --
 ALTER TABLE `pregunta`
-  ADD CONSTRAINT `fk_pregunta_categoria1` FOREIGN KEY (`categoria_id`) REFERENCES `categoria` (`categoria_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_pregunta_categoria1` FOREIGN KEY (`encuesta_categoria_id`) REFERENCES `encuesta_categoria` (`encuesta_categoria_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `respuesta`
@@ -784,7 +820,7 @@ ALTER TABLE `respuesta_encuesta`
   ADD CONSTRAINT `respuesta_encuesta_ibfk_1` FOREIGN KEY (`pregunta_id`) REFERENCES `pregunta` (`pregunta_id`),
   ADD CONSTRAINT `respuesta_encuesta_ibfk_2` FOREIGN KEY (`encuestador_dni`) REFERENCES `encuestador` (`encuestador_dni`),
   ADD CONSTRAINT `respuesta_encuesta_ibfk_3` FOREIGN KEY (`encuestado_id`) REFERENCES `encuestado` (`encuestado_id`),
-  ADD CONSTRAINT `respuesta_encuesta_ibfk_4` FOREIGN KEY (`respuesta_id`) REFERENCES `respuesta` (`respuesta_pregunta_id`);
+  ADD CONSTRAINT `respuesta_encuesta_ibfk_4` FOREIGN KEY (`respuesta_id`) REFERENCES `respuesta` (`respuesta_id`);
 
 --
 -- Filtros para la tabla `usuario`
