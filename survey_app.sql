@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-02-2020 a las 23:19:44
+-- Tiempo de generación: 29-02-2020 a las 23:32:34
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 7.2.8
 
@@ -670,7 +670,7 @@ CREATE TABLE `usuario` (
 --
 
 INSERT INTO `usuario` (`encuestador_dni`, `usuario_nombre`, `usuario_contrasenia`) VALUES
-(33999555, 'aaa', 'ssss');
+(33999555, 'usuario', '$2y$12$vBJWfdNNDBCtgq5NSn0FLezLlm2.OF1MuUZgfCEbjcF5J7lUoC0BC');
 
 --
 -- Índices para tablas volcadas
