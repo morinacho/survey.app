@@ -4,7 +4,7 @@
         <form>
             <div class="row mb-3">
                 <div class="col-9">
-                    <h2>Agregar nueva encuesta</h2>
+                    <h3>Agregar nueva encuesta</h3>
                 </div>
                 <div class="col-3">
                     <button type="submit" class="btn btn-outline-info btn-block">Guardar encuesta</button>
@@ -13,10 +13,6 @@
             <div class="form-group">
                 <label for="survey-title">Título de encuesta</label>
                 <input type="email" class="form-control" id="survey-title" name="surveyTitle">
-            </div>
-            <div class="form-group">
-                <label for="survey-admin">Encuestador responsable</label>
-                <input type="password" class="form-control" id="survey-admin" class="surveyAdmin">
             </div> 
         </form>
         <button type="button" class="btn btn-outline-dark btn-block" data-toggle="modal" data-target="#add-question">Agregar pregunta</button>
