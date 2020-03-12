@@ -13,7 +13,7 @@
 
 
 		# Routing
-		# Add new survey
+		# Add new survey 
 		public function addSurvey(){
 			$this->view('surveys/add-survey');
 		}
@@ -42,7 +42,8 @@
 		}
 		# Crea la vista para realizar una encuesta
 		public function newSurvey(){
-			# Se comprueban los criterios de exclusion
+			
+			/*# Se comprueban los criterios de exclusion
 			if (isset($_GET['edad'])||isset($_GET['residencia'])||isset($_GET['hospital'])||isset($_GET['corticoides'])||!isset($_GET['acepta'])) {
 				print "<script>alert(\"No se puede realizar la encuesta.\");window.location='create';</script>";
 			}
@@ -81,7 +82,7 @@
 			 * [pregunta anidada]= indica si esta respuesta abre otra pregunta
 			 */
 
-			$this->view('surveys/survey', $param);
+			$this->view('surveys/add-survey');
 		}
 
 		# Muestra las encuestas realizadas

@@ -1,3 +1,4 @@
+ 
 <?php require_once APP_ROUTE . '/views/modules/header.php';?> 
 <div class="row justify-content-around mt-4">
     <div class="col-8">
@@ -9,10 +10,6 @@
                 <div class="col-3">
                     <button type="submit" class="btn btn-outline-info btn-block">Guardar encuesta</button>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="survey-title">Título de encuesta</label>
-                <input type="email" class="form-control" id="survey-title" name="surveyTitle">
             </div> 
         </form>
         <button type="button" class="btn btn-outline-dark btn-block" data-toggle="modal" data-target="#add-question">Agregar pregunta</button>

@@ -3,21 +3,21 @@
 		<h1>Administrador de Encuestas</h1>
 	</div>
 	<div class="col-2">
-		<a href="<?php echo URL_ROUTE; ?>surveys/addsurvey" class="badge"> 
+		<a href="<?php echo URL_ROUTE; ?>surveys/create" class="badge"> 
 			<img src="<?php echo URL_ROUTE; ?>media/icons/add-survey.png" style="width:50%" class="mx-auto d-block">
 			<p class="card-text mt-2">Nueva Encuesta</p>
 		</a>
 	</div>
 	<div class="col-2">
-		<a href="<?php echo URL_ROUTE; ?>surveys/viewsurvey" class="badge"> 
-			<img src="<?php echo URL_ROUTE; ?>media/icons/view-survey.png" style="width:50%" class="mx-auto d-block">
-			<p class="card-text mt-2">Ver Encuestas</p>
+		<a href="<?php echo URL_ROUTE; ?>surveys/favsurvey" class="badge"> 
+			<img src="<?php echo URL_ROUTE; ?>media/icons/make-survey.png" style="width:50%" class="mx-auto d-block">
+			<p class="card-text mt-2">Realizar Encuesta</p>
 		</a>
 	</div>
 	<div class="col-2">
-		<a href="<?php echo URL_ROUTE; ?>surveys/favsurvey" class="badge"> 
-			<img src="<?php echo URL_ROUTE; ?>media/icons/fav-survey.png" style="width:50%" class="mx-auto d-block">
-			<p class="card-text mt-2">Encuesta Favorita</p>
+		<a href="<?php echo URL_ROUTE; ?>surveys/viewsurvey" class="badge"> 
+			<img src="<?php echo URL_ROUTE; ?>media/icons/view-survey.png" style="width:50%" class="mx-auto d-block">
+			<p class="card-text mt-2">Ver Resultados</p>
 		</a>
 	</div>
 	<div class="col-2">
