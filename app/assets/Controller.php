@@ -11,12 +11,17 @@
 		# Load view
 		public function view($view, $param = []){
 			session_start();
-			if (file_exists('../app/views/' . $view . '.php')){
-				require_once '../app/views/' . $view . '.php';
+			if(Controller::authenticated()){
+				if (file_exists('../app/views/' . $view . '.php')){
+					require_once '../app/views/' . $view . '.php';
+				}
+				else{
+					#require_once '../app/views/modules/404/index.html';
+					die('PAGE NOT FOUND');
+				}
 			}
 			else{
-				#require_once '../app/views/modules/404/index.html';
-				die('ERROR');
+				require_once '../app/views/modules/login.php';
 			}
 		}
 

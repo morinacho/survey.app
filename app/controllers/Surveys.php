@@ -1,45 +1,102 @@
 <?php   
 	class Surveys extends Controller{
 		private $surveyModel;
+		private $categoryModel;
+		private $answerModel;
         
 		public function __construct() {
-			$this->surveyModel = $this->model('Survey'); 
+			$this->surveyModel   = $this->model('Survey'); 
+			$this->categoryModel = $this->model('Category'); 
+			$this->answerModel   = $this->model('Answer');
 		}
 
-		# Crea la vista index con menu para realizar encuesta
+		# Redirect Home
 		public function index(){  
-			$this->view('surveys/index');
+			redirect('home');
 		}
 
-
-		# Routing
-		# Add new survey 
-		public function addSurvey(){
-			$this->view('surveys/add-survey');
-		}
-
-		# Favorite survey
-		public function favSurvey(){
-			$this->view('surveys/fav-survey');
-		}
-
-		# Pending survey
-		public function pendingSurvey(){
-			$this->view('surveys/pending-survey');
-		}
-
-		# Finish survey
-		public function finishSurvey(){
-			$this->view('surveys/finish-survey');
-		}
-		
-		# View survey
-		public function viewSurvey(){
-			$this->view('surveys/view-survey');
-		}
+		# Create new survey form
 		public function create(){
 			$this->view('surveys/create');
 		}
+
+		# Save a survey
+		public function store(){
+			if($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['new-survey'])){
+				if(!empty($_POST['survey-name'])){
+					$surveyName = trim($_POST['survey-name']);
+
+					$surveyId = $this->surveyModel->addSurvey($surveyName);
+					if($surveyId != null){						
+						redirect("questions/create/?survey_id=$surveyId&survey_name=$surveyName");
+					} 	
+				}
+			    else{ echo 'Survey empty';} 
+			} 
+		} 
+
+		# Views list survey
+		public function viewSurveys(){
+			$param = $this->surveyModel->getSurveys();
+			$this->view('surveys/view-surveys', $param);
+		}
+
+		# Views to fill out survey
+		public function fillOutSurvey($surveyId){ 
+			$this->view('surveys/fillout-survey');
+		}
+		
+		# Save a fill out survey
+		public function saveResult(){}
+
+
+		# Views to list result
+		public function viewResults(){
+			$param = $this->surveyModel->getSurveys();
+			$this->view('surveys/view-results', $param);
+		}
+
+		# Show result of a survey
+		public function viewSurveyResult($surveyId){
+			$this->view('surveys/view-survey-result');
+		}
+
+		# Export a survey to xls
+		public function export($surveyId){ 
+			/*$db=new DataBase();
+			$db->query('SELECT c.categoria_nombre, p.pregunta_texto, rp.respuesta_pregunta_texto, e.encuestado_id
+					FROM respuesta_encuesta re 
+					INNER JOIN respuesta_pregunta rp 
+					on re.respuesta_pregunta_id=rp.respuesta_pregunta_id 
+					INNER JOIN encuesta e 
+					on re.encuesta_id=e.encuesta_id
+					INNER JOIN pregunta p
+					on p.pregunta_id=rp.pregunta_id
+					INNER JOIN categoria c
+					ON c.categoria_id=p.categoria_id
+					ORDER BY e.encuestado_id, c.categoria_id, p.pregunta_id');
+			$res=$db->getRecords();
+			print_r($res[0]);
+
+			/* esto es el ejemplo para escribir el excel, tengo que organizar lo que devuelve $res
+			$rows = array(
+					    array('2003','1','-50.5','2010-01-01 23:00:00','2012-12-31 23:00:00'),
+					    array('2003','=B1', '23.5','2010-01-01 00:00:00','2012-12-31 00:00:00'),
+					);
+			$writer = new XLSXWriter();
+			$writer->setAuthor('Survey.app'); 
+			foreach($rows as $row){
+				$writer->writeSheetRow('Sheet1', $row);
+			}
+			$writer->writeToFile('resultados_encuesta.xlsx');*/
+		}
+
+		# Permite editar la encuesta seleccionada
+		public function update(){}
+
+		# Elimina una encuesta
+		public function delete(){}
+
 		# Crea la vista para realizar una encuesta
 		public function newSurvey(){
 			
@@ -83,58 +140,7 @@
 			 */
 
 			$this->view('surveys/add-survey');
-		}
-
-		# Muestra las encuestas realizadas
-		public function show(){
-					
-		} 
-
-		# Permite guardar los datos de la encuesta que se realizo desde el create
-		public function store(){
-			
-		}
-
-		# Permite editar la encuesta seleccionada
-		public function update(){
-
-		}
-
-		# Elimina una encuesta
-		public function delete(){
-
-		}
-
-		# Exporta los datos de todas las encuesta en un archivo xlsx
-
-		public function export(){
-			$db=new DataBase();
-			$db->query('SELECT c.categoria_nombre, p.pregunta_texto, rp.respuesta_pregunta_texto, e.encuestado_id
-					FROM respuesta_encuesta re 
-					INNER JOIN respuesta_pregunta rp 
-					on re.respuesta_pregunta_id=rp.respuesta_pregunta_id 
-					INNER JOIN encuesta e 
-					on re.encuesta_id=e.encuesta_id
-					INNER JOIN pregunta p
-					on p.pregunta_id=rp.pregunta_id
-					INNER JOIN categoria c
-					ON c.categoria_id=p.categoria_id
-					ORDER BY e.encuestado_id, c.categoria_id, p.pregunta_id');
-			$res=$db->getRecords();
-			print_r($res[0]);
-
-			/* esto es el ejemplo para escribir el excel, tengo que organizar lo que devuelve $res
-			$rows = array(
-					    array('2003','1','-50.5','2010-01-01 23:00:00','2012-12-31 23:00:00'),
-					    array('2003','=B1', '23.5','2010-01-01 00:00:00','2012-12-31 00:00:00'),
-					);
-			$writer = new XLSXWriter();
-			$writer->setAuthor('Survey.app'); 
-			foreach($rows as $row){
-				$writer->writeSheetRow('Sheet1', $row);
-			}
-			$writer->writeToFile('resultados_encuesta.xlsx');*/
-		}
+		}		
 	}
 
 ?>

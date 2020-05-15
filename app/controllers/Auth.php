@@ -10,17 +10,23 @@
 
 		public function login(){
 			if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])){
-				if(isset($_POST['username']) && isset($_POST['password'])){
-					$username = $_POST['username'];
+				if(isset($_POST['email']) && isset($_POST['password'])){
+					$email = $_POST['email'];
 					$pass	  = $_POST['password']; 
-					$user	  = $this->userModel->getByUsername($username);
+					$user	  = $this->userModel->getByEmail($email);
 					
-					if(!empty($user) && password_verify($pass, $user->usuario_contrasenia)){ 
-						$_SESSION['user'] = $user->usuario_nombre;
-					}   
+					if(!empty($user) && password_verify($pass, $user->surveyr_password)){ 
+						$_SESSION['user'] = $user->surveyr_name." ".$user->surveyr_lastname;
+						redirect('home');
+					}
+					else{
+						redirect('login');
+					}
 				}
-			} 	
-			redirect('index'); 
+				else{
+					redirect('login');
+				}
+			} 	 
 		}
 
 		public function register(){

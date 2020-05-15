@@ -2,14 +2,14 @@
 <div class="row justify-content-around mt-5">
     <div class="col-4"> 
         <div class="card">
-            <img src="<?php echo URL_ROUTE ?>media/images/loginheader.jpg" class="card-img-top">
+            <img src="<?php echo URL_ROUTE ?>media/system/images/loginheader.jpg" class="card-img-top">
             <div class="card-body">
                 <form action="<?php echo URL_ROUTE ?>auth/login" method="post"> 
                     <div class="input-group mb-4">
                         <div class="input-group-prepend">
                             <div class="input-group-text material-icons">person</div>
                         </div>
-                        <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                        <input type="email" class="form-control" id="username" name="email" placeholder="example@email.com">
                     </div> 
                     <div class="input-group mb-4">
                         <div class="input-group-prepend">

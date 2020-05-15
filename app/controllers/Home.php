@@ -3,11 +3,15 @@
 	class Home extends Controller{
 		
 		public function __construct() {
-			$this->view('index');
+			
 		}
 
 		public function index(){
-			 
+			$this->view('index');
+		}
+
+		public function configuration(){
+			$this->view("modules/config");
 		}
 	}
 

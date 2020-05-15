@@ -7,10 +7,12 @@
 			$this->db = new DataBase;
 		}
 
-		public function getByUsername($username){ 
+		public function getByEmail($email){ 
 			$user =  $this->db->deleteSpecialChars($username, 'char'); 
-			$this->db->query('SELECT * FROM usuario WHERE usuario_nombre = :user');
-			$this->db->bind(':user', $user);
+			$this->db->query('SELECT surveyr_name, surveyr_lastname, surveyr_password 
+							  FROM surveyr 
+							  WHERE surveyr_email = :email');
+			$this->db->bind(':email', $email);
 
 			$response = $this->db->getRecord();
 			return $response;
@@ -29,9 +31,7 @@
 			if($this->db->execute()){
 				return true;
 			}
-			else{
-				return false;
-			}
+			else{ return false; }
 			*/
 		}
 	}

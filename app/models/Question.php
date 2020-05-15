@@ -1,132 +1,66 @@
 <?php
-    class Question extends Controller{
-        private $id;
-        private $texto;
-        private $categoriaId;
-        private $respuestas = array();
-        private $db         = NULL;
-        private $answerModel;
-        /**
-         * construye la pregunta apartir del id y el texto
-         */
-        public function index($id,$texto){ 
-            $this->answerModel = $this->model("Answer");
-            $this->id    = $id;
-            $this->texto = $texto;
-            $this->db    = new DataBase;
-            $this->db->query('SELECT respuesta_id,
-                                     respuesta_texto,
-                                     respuesta_imagen,
-                                     respuesta_excluyente,
-                                     pregunta_id_anidada,
-                                     respuesta_tipo
-                            FROM respuesta
-                            WHERE pregunta_id=:preguntaId;');
+    class Question{
+        private $db;
 
-            $this->db->bind(':preguntaId',$this->id);
-            $resultSet = $this->db->getRecords();        
-            
-            for($i = 0; $i<$this->db->rowCount(); $i++){
-                $id              = $resultSet[$i]->respuesta_id;
-                $texto           = $resultSet[$i]->respuesta_texto;
-                $imagen          = $resultSet[$i]->respuesta_imagen;
-                $tipo            = $resultSet[$i]->respuesta_tipo;
-                $excluyente      = $resultSet[$i]->respuesta_excluyente;
-                $preguntaAnidada = $resultSet[$i]->pregunta_id_anidada;
-                /**
-                 * aca vuelve a hacer lo mismo pero es un Answer()
-                 * con los datos de la respuesta en $answerModel
-                 */
-                $this->respuestas[$i] = $this->answerModel->index($id,$texto,$imagen,$tipo,$excluyente,$preguntaAnidada,$this->id);
-            }
+        public function __construct(){
+			$this->db = new DataBase;
+        }
 
-            $response = [
-                    "id"        => $this->id,
-                    "texto"     => $this->texto,
-                    "respuestas"=> $this->getRespuestas()
-            ];
+        public function addQuestion($param){
+            $this->db->query('INSERT INTO question (question_content, category_id, survey_id) 
+                              VALUES (:question_content, :category_id, :survey_id)');
+            # Link values 
+            $this->db->bind(':question_content', $param['question']);
+            $this->db->bind(':category_id', $param['category']);
+            $this->db->bind(':survey_id', $param['survey']);
+             # Run
+             if ($this->db->execute()){
+                return $this->getQuestionId($param['question']);
+            }
+            else{ return null; }
+        }
 
-            return $response;
+        public function getQuestionId($questionText){
+            $this->db->query('SELECT question_id FROM question WHERE question_content = :question_content');
+			$this->db->bind(':question_content', $questionText);
+			$response = $this->db-> getRecord();
+			return $response->question_id;
         }
-        /**
-         * devuelve todas las respustas posibles a la pregunta
-         */
-        public function getRespuestas(){
-            return $this->respuestas;
-        }
-        /**
-         * devuelve una respuesta de la pregunta
-         */
-        public function getRespuesta($i){
-            if($i<$this->getSize()){
-                return $this->respuestas[$i];
-            }
-        }
-        /**
-         * devuelve la cantidad de respuestas que tiene la pregunta
-         */
-        public function getSize(){
-            return count($this->respuestas);
-        }
-        /**
-         * devuelve el texto de la pregunta
-         */
-        public function getTexto(){
-            return $this->texto;
-        }
-        /**
-         * devuelve el id de la pregunta
-         */
-        public function getId(){
-            return $this->id;
-        }
-        public function setTexto($texto){
-            $this->texto=$texto;
-        }
-        /**
-         * agrega respuestas a la pregunta
-         */
-        public function add($respuesta){
-            $this->respuestas[$this->getSize()]=$respuesta;
-        }
-        /**
-         * crea una nueva pregunta
-         */
-        public function insert($categoriaId){
-            if($this->db==NULL){
-                $this->db=new DataBase;
-            }
-            
-            $this->db->query('INSERT INTO `pregunta`(
-                    `pregunta_id`,
-                    `pregunta_texto`,
-                    `categoria_id`) 
-                    VALUES (NULL, 
-                    `:texto`, 
-                    :categoriaId);');
-            $this->db->bind(':texto', $this->texto);
-            $this->db->bind(':categoriaId', $categoriaId);
-            $this->db->excute();
-            
-            $this->db->query('SELECT pregunta_id
-                            FROM pregunta
-                            WHERE catergoria_id=:categoriaId 
-                            AND pregunta_texto=:texto;');
-            $this->db->bind(':texto', $this->texto);
-            $this->db->bind(':categoriaId', $categoriaId);
-            $resultset=$this->db->getRescords();
-            $this->id=$resultset[0]->pregunta_id;
 
-            for($i=0;$i<$this->getSize();$i++){
-                    $this->respuestas[$i]->insert($this->id);
-            }
+        public function getQuestionText($questionId){
+            $this->db->query('SELECT question_content FROM question WHERE question_id = :question_id');
+			$this->db->bind(':question_id', $questionId);
+			$response = $this->db-> getRecord();
+			return $response->question_content;
         }
-        /**
-         * actualiza los datos de la pregunta
-         */
+
+        public function getQuestions($surveyId){
+            $this->db->query('SELECT q.question_id, q.question_content, q.category_id, c.category_name
+                              FROM question q
+                              INNER JOIN category c
+                              ON q.category_id = c.category_id
+                              WHERE survey_id = :survey_id
+                              ORDER BY c.category_id'
+                            );
+            $this->db->bind(':survey_id', $surveyId);
+            $result = $this->db->getRecords();
+
+            if($this->db->rowCount() > 0){ 
+                foreach ($result as $key => $value) {
+                    $response[$value->question_id] = [ 
+                        "question_content" => $value->question_content, 
+                        "category_name"    => $value->category_name,
+                        "category_id"      => $value->category_id
+                    ];  
+                } 
+                return $response;
+            }
+            else {return 0;}
+        }
+         
         public function update(){
-            $this->db->query('UPDATE `pregunta` 
-                            SET `pregunta_texto`= :texto,
+            $this->db->query('UPDATE pregunta 
+                            SET pregunta_texto = :texto,
                             categoria_id  = :categoriaId
                             WHERE pregunta_id=:preguntaId;');
             $this->db->bind(':texto', $this->texto);

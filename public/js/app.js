@@ -1,5 +1,29 @@
-$(document).ready(function(){
-    
+$(document).ready(function(){ 
+    $("#category-type").change(function(){
+        $("#category-type option:selected").each(function() {
+            switch($(this).val()){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break; 
+            }
+        });
+    });
+
+
+
     var countCategory = 1;
 
     $('#category-select').change(function(){
@@ -28,8 +52,6 @@ $(document).ready(function(){
         $('#accordionCategory').append(divCategory);
  
         countCategory++; 
-    }
-
-     
+    } 
 });
 
